@@ -1,0 +1,14 @@
+<resources>
+    <string name="welcome_back">Witamy z powrotem</string>
+    <string name="login">Zaloguj się</string>
+    <string name="email">Email</string>
+    <string name="email_hint">Wpisz swój email</string>
+    <string name="password">Hasło</string>
+    <string name="password_hint">Wpisz swoje hasło</string>
+    <string name="register">Zarejestruj się</string>
+    <string name="no_account">Nie posiadasz jeszcze konta?</string>
+    <string name="already_have_account">Posiadasz już konto?</string>
+    <string name="first_name">Imię</string>
+    <string name="first_name_hint">Wpisz swoje imię</string>
+    <string name="welcome">Witamy</string>
+</resources>

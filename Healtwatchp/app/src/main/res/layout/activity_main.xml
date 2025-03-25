@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="top|start"
+    android:background="@drawable/startup_background"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HealthWatch"
+        android:textSize="32sp"
+        android:textStyle="normal"
+        android:textColor="@color/white"
+        android:fontFamily="@font/kanitregular"
+        android:layout_marginStart="21dp"
+        android:includeFontPadding="false"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="21dp"
+        android:fontFamily="@font/kanitmedium"
+        android:includeFontPadding="false"
+        android:text="Zarządzaj lekami\ni wizytami"
+        android:textAlignment="center"
+        android:textColor="@color/blue_700"
+        android:textSize="48sp"
+        android:textStyle="normal"
+        android:layout_marginTop="30dp"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="32dp">
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_button_startup"
+            android:fontFamily="@font/kanitmedium"
+            android:paddingStart="32dp"
+            android:paddingTop="12dp"
+            android:paddingEnd="32dp"
+            android:paddingBottom="12dp"
+            android:text="Zaloguj się"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_rejestracja"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/custom_button_stroke"
+            android:fontFamily="@font/kanitmedium"
+            android:paddingStart="32dp"
+            android:paddingTop="12dp"
+            android:paddingEnd="32dp"
+            android:paddingBottom="12dp"
+            android:text="Zarejestruj się"
+            android:textColor="@color/blue_700"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/kanitregular"
+            android:text="Dzięki HealtWatch zadbasz\no swoje zdrowie w prosty\ni skuteczny sposób"
+            android:textSize="24sp"
+            android:textColor="@color/blue_700"
+            android:textAlignment="center"
+            android:textStyle="normal"
+            android:layout_marginTop="16dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

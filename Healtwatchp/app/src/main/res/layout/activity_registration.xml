@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="top|start"
+    android:background="@drawable/background"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Witamy"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="@color/blue_700"
+        android:fontFamily="@font/kanitmedium"
+        android:layout_marginStart="21dp"
+        android:includeFontPadding="false"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Zarejestruj się"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        android:textColor="@color/blue_700"
+        android:fontFamily="@font/kanitmedium"
+        android:layout_marginStart="21dp"
+        android:includeFontPadding="false"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Imię"
+        android:textSize="27sp"
+        android:fontFamily="@font/kanitregular"
+        android:textColor="@color/blue_700"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/imie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/custom_edixtext"
+        android:hint="Wprowadz imię"
+        android:minHeight="65dp"
+        android:textColor="@color/black"
+        android:paddingStart="16dp"
+        android:inputType="textPersonName"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nazwisko"
+        android:textSize="27sp"
+        android:fontFamily="@font/kanitregular"
+        android:textColor="@color/blue_700"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/nazwisko"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/custom_edixtext"
+        android:hint="Wprowadz nazwisko"
+        android:minHeight="65dp"
+        android:textColor="@color/black"
+        android:paddingStart="16dp"
+        android:inputType="textPersonName"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email"
+        android:textSize="27sp"
+        android:fontFamily="@font/kanitregular"
+        android:textColor="@color/blue_700"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/custom_edixtext"
+        android:hint="Email"
+        android:minHeight="65dp"
+        android:textColor="@color/black"
+        android:paddingStart="16dp"
+        android:inputType="textEmailAddress"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hasło"
+        android:textSize="27sp"
+        android:fontFamily="@font/kanitregular"
+        android:textColor="@color/blue_700"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/haslo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/custom_edixtext"
+        android:hint="Hasło"
+        android:minHeight="65dp"
+        android:textColor="@color/black"
+        android:paddingStart="16dp"
+        android:inputType="textPassword"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="32dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Zadbaj o swoje zdrowie"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:fontFamily="@font/kanitmedium"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/blad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/red"
+            android:textSize="16sp"
+            android:visibility="gone"
+            android:layout_marginTop="8dp"
+            android:gravity="center"/>
+
+
+        <Button
+            android:id="@+id/btn_rejestracja"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_button"
+            android:paddingStart="32dp"
+            android:paddingTop="12dp"
+            android:paddingEnd="32dp"
+            android:paddingBottom="12dp"
+            android:text="Zarejestruj się"
+            android:textColor="@color/blue_700"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Posiadasz już konto?"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="16dp"/>
+
+        <TextView
+            android:id="@+id/txt_zaloguj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Zaloguj się"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:fontFamily="@font/kanitmedium"
+            android:layout_marginTop="4dp"
+            android:clickable="true"
+            android:focusable="true"/>
+
+    </LinearLayout>
+
+</LinearLayout>
