@@ -77,23 +77,31 @@ public class Login extends AppCompatActivity {
                                     JSONObject jsonObject = new JSONObject(response);
                                     String status = jsonObject.getString("status");
                                     String message = jsonObject.getString("message");
-                                    if (status.equals("succes")){
+                                    if (status.equals("succes")) {
                                         name = jsonObject.getString("name");
                                         surname = jsonObject.getString("surname");
                                         email = jsonObject.getString("email");
                                         apiKey = jsonObject.getString("apiKey");
+
                                         SharedPreferences.Editor editor = sharedPreferences.edit();
                                         editor.putString("logged", "true");
                                         editor.putString("name", name);
                                         editor.putString("email", email);
                                         editor.putString("apiKey", apiKey);
                                         editor.apply();
+
                                         Intent intent = new Intent(getApplicationContext(), MainBoard.class);
+                                        intent.putExtra("apiKey", apiKey);
                                         startActivity(intent);
                                         finish();
+                                    } else {
+                                        textViewError.setText(message);
+                                        textViewError.setVisibility(View.VISIBLE);
                                     }
                                 } catch (JSONException e) {
-                                    throw new RuntimeException(e);
+                                    Log.e("JSONError", "Błąd parsowania JSON", e);
+                                    textViewError.setText("Błąd systemu. Spróbuj ponownie później.");
+                                    textViewError.setVisibility(View.VISIBLE);
                                 }
                             }
                         }, new Response.ErrorListener() {

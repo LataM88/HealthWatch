@@ -4,8 +4,10 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,7 +28,9 @@ public class MainBoard extends AppCompatActivity {
 
     EditText nameText, dosageText, daysText;
     Button timeButton, addButton;
+    TextView textViewError;
     String selectedTime = "";
+    String apiKey = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +42,13 @@ public class MainBoard extends AppCompatActivity {
         daysText = findViewById(R.id.selected_days);
         timeButton = findViewById(R.id.select_time);
         addButton = findViewById(R.id.add);
+        textViewError = findViewById(R.id.error_message);
 
-        // Obsługa wyboru godziny
+
+        apiKey = getIntent().getStringExtra("apiKey");
+        Log.d("MainBoard", "Otrzymano API Key: " + apiKey);
+
+
         timeButton.setOnClickListener(v -> {
             Calendar calendar = Calendar.getInstance();
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -54,15 +63,17 @@ public class MainBoard extends AppCompatActivity {
             timePickerDialog.show();
         });
 
-        // Obsługa przycisku "Dodaj"
         addButton.setOnClickListener(v -> {
             String name = nameText.getText().toString();
             String dosage = dosageText.getText().toString();
             String days = daysText.getText().toString();
 
             if (TextUtils.isEmpty(name) || TextUtils.isEmpty(dosage) || TextUtils.isEmpty(selectedTime) || TextUtils.isEmpty(days)) {
-                Toast.makeText(MainBoard.this, "Wypełnij wszystkie pola!", Toast.LENGTH_SHORT).show();
+                textViewError.setText("Wszystkie pola muszą być wypełnione!");
+                textViewError.setVisibility(View.VISIBLE);
+                return;
             } else {
+                textViewError.setVisibility(View.GONE);
                 sendMedicationToServer(name, dosage, selectedTime, days);
             }
         });
@@ -79,11 +90,11 @@ public class MainBoard extends AppCompatActivity {
             jsonBody.put("time", time);
             jsonBody.put("days", days);
 
-            // Dodanie logów JSON
             Log.d("sendMedicationToServer", "Wysyłane dane: " + jsonBody.toString());
         } catch (JSONException e) {
-            e.printStackTrace();
-            Toast.makeText(MainBoard.this, "Błąd tworzenia JSON: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.e("JSONError", "Błąd tworzenia JSON", e);
+            textViewError.setText("Błąd tworzenia danych JSON!");
+            textViewError.setVisibility(View.VISIBLE);
             return;
         }
 
@@ -92,9 +103,10 @@ public class MainBoard extends AppCompatActivity {
                 url,
                 jsonBody,
                 response -> {
-                    // Logowanie odpowiedzi serwera
                     Log.d("ServerResponse", "Odpowiedź serwera: " + response.toString());
-                    Toast.makeText(MainBoard.this, "Odpowiedź serwera: " + response.toString(), Toast.LENGTH_SHORT).show();
+                    textViewError.setText("");
+                    textViewError.setVisibility(View.GONE);
+                    Toast.makeText(MainBoard.this, "Serwer: " + response.toString(), Toast.LENGTH_SHORT).show();
                 },
                 error -> {
                     String errorMessage = "Błąd połączenia: ";
@@ -106,20 +118,21 @@ public class MainBoard extends AppCompatActivity {
                             errorMessage += " - " + responseBody;
                         } catch (Exception e) {
                             errorMessage += " - Nie udało się odczytać odpowiedzi błędu.";
-                            e.printStackTrace();
+                            Log.e("ErrorResponse", "Wyjątek przy odczycie odpowiedzi błędu", e);
                         }
                     } else {
                         errorMessage += "Brak połączenia z serwerem.";
                     }
-                    Toast.makeText(MainBoard.this, errorMessage, Toast.LENGTH_LONG).show();
-                    error.printStackTrace();
+                    textViewError.setText(errorMessage);
+                    textViewError.setVisibility(View.VISIBLE);
+                    Log.e("RequestError", "Błąd żądania", error);
                 }
         ) {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Content-Type", "application/json");
-                // headers.put("Authorization", "Bearer " + yourAuthToken); // Dodaj token, jeśli wymagany
+                headers.put("Authorization", apiKey);
                 return headers;
             }
         };
