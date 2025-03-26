@@ -23,4 +23,7 @@ public class Medication {
     private String time;
     private String days;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }
