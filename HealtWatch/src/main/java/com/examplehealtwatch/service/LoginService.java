@@ -63,6 +63,7 @@ public class LoginService {
     }
 
     public boolean validateApiKey(String apiKey) {
+        System.out.println("Walidacja klucza API: " + apiKey);
         return apiKeys.containsKey(apiKey);
     }
 

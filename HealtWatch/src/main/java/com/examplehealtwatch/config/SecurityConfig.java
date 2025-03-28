@@ -19,9 +19,9 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*")); // Tymczasowo zezwól na wszystkie originy
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Uwzględnij wszystkie metody HTTP
-        configuration.setAllowedHeaders(List.of("Content-Type", "Authorization")); // Usuwaj gwiazdki
+        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("Content-Type", "Authorization"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -38,8 +38,8 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/", "/api/register", "/api/login", "/api/medication/**").permitAll()
-                        .anyRequest().authenticated() // Pozostałe endpointy wymagają uwierzytelnienia
+                        .requestMatchers("/", "/api/register", "/api/login", "/api/medications" ,"/api/medication/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()));
         return http.build();

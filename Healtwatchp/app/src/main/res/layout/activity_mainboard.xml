@@ -1,22 +1,34 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/background">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Twoje Leki"
+        android:textSize="32sp"
+        android:layout_marginBottom="16dp"
+        android:textStyle="bold"
+        android:fontFamily="@font/kanitmedium"
+        android:textColor="@color/blue_700" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/medication_input_layout" />
-
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="vertical"/>
 
     <LinearLayout
-        android:id="@+id/medication_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="#E3E1E1"
         android:orientation="vertical"
+        android:background="#E3E1E1"
         android:padding="16dp">
 
         <TextView
@@ -27,38 +39,47 @@
             android:textColor="@android:color/holo_red_dark"
             android:padding="16dp"
             android:layout_marginTop="8dp"
-            android:textSize="16sp"
-            android:text=""/>
-
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nazwa leku" />
+            android:hint="Nazwa leku"
+            android:background="@drawable/custom_edixtext" />
 
         <EditText
             android:id="@+id/dosage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Dawka" />
+            android:hint="Dawka"
+            android:background="@drawable/custom_edixtext" />
 
         <Button
             android:id="@+id/select_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/custom_button"
             android:text="Wybierz godzinę" />
 
         <EditText
             android:id="@+id/selected_days"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Wybrane dni (np. Pon, Śr)" />
+            android:hint="Wybrane dni (np. Pon, Śr)"
+            android:background="@drawable/custom_edixtext" />
 
         <Button
             android:id="@+id/add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Dodaj" />
+            android:background="@drawable/custom_button"
+            android:text="Dodaj"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:padding="12dp"
+            android:layout_marginTop="8dp" />
+
     </LinearLayout>
-</RelativeLayout>
+
+</LinearLayout>

@@ -9,6 +9,11 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class MedicationService {
 
@@ -36,5 +41,21 @@ public class MedicationService {
             System.err.println("Błąd podczas zapisu leku: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    public List<Map<String, String>> getMedicationsForUser(Long userId) {
+        List<Medication> medications = medicationRepository.findByUserId(userId);
+
+        List<Map<String, String>> result = new ArrayList<>();
+        for (Medication medication : medications) {
+            Map<String, String> medicationData = new HashMap<>();
+            medicationData.put("name", medication.getName());
+            medicationData.put("dosage", medication.getDosage());
+            medicationData.put("time", medication.getTime());
+            medicationData.put("days", medication.getDays());
+            result.add(medicationData);
+        }
+
+        return result;
     }
 }

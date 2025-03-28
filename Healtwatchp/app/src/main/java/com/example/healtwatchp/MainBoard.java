@@ -11,15 +11,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.healtwatchp.adapter.Medication;
+import com.example.healtwatchp.adapter.MedicationAdapter;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +38,10 @@ public class MainBoard extends AppCompatActivity {
     TextView textViewError;
     String selectedTime = "";
     String apiKey = "";
+
+    RecyclerView recyclerView;
+    MedicationAdapter adapter;
+    ArrayList<Medication> medicationList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +55,16 @@ public class MainBoard extends AppCompatActivity {
         addButton = findViewById(R.id.add);
         textViewError = findViewById(R.id.error_message);
 
+        recyclerView = findViewById(R.id.recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        medicationList = new ArrayList<>();
+        adapter = new MedicationAdapter(medicationList);
+        recyclerView.setAdapter(adapter);
 
         apiKey = getIntent().getStringExtra("apiKey");
         Log.d("MainBoard", "Otrzymano API Key: " + apiKey);
 
+        fetchMedications();
 
         timeButton.setOnClickListener(v -> {
             Calendar calendar = Calendar.getInstance();
@@ -79,6 +96,50 @@ public class MainBoard extends AppCompatActivity {
         });
     }
 
+    private void fetchMedications() {
+        String url = "http://10.0.2.2:8080/api/medications";
+        Log.d("FetchMedications", "Rozpoczynam pobieranie leków");
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                response -> {
+                    try {
+                        medicationList.clear();
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject jsonObject = response.getJSONObject(i);
+                            Log.d("FetchMedications", "Dodawanie leku: " + jsonObject);
+                            Medication medication = new Medication(
+                                    jsonObject.getString("name"),
+                                    jsonObject.getString("dosage"),
+                                    jsonObject.getString("time"),
+                                    jsonObject.getString("days")
+                            );
+                            medicationList.add(medication);
+                        }
+                        adapter.notifyDataSetChanged();
+                    } catch (JSONException e) {
+                        Log.e("FetchMedications", "Błąd parsowania JSON", e);
+                    }
+                },
+                error -> {
+                    Log.e("FetchMedications", "Błąd żądania", error);
+                    textViewError.setText("Błąd pobierania leków.");
+                    textViewError.setVisibility(View.VISIBLE);
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", apiKey);
+                return headers;
+            }
+        };
+
+        queue.add(jsonArrayRequest);
+    }
+
     private void sendMedicationToServer(String name, String dosage, String time, String days) {
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://10.0.2.2:8080/api/medication";
@@ -89,10 +150,7 @@ public class MainBoard extends AppCompatActivity {
             jsonBody.put("dosage", dosage);
             jsonBody.put("time", time);
             jsonBody.put("days", days);
-
-            Log.d("sendMedicationToServer", "Wysyłane dane: " + jsonBody.toString());
         } catch (JSONException e) {
-            Log.e("JSONError", "Błąd tworzenia JSON", e);
             textViewError.setText("Błąd tworzenia danych JSON!");
             textViewError.setVisibility(View.VISIBLE);
             return;
@@ -103,31 +161,13 @@ public class MainBoard extends AppCompatActivity {
                 url,
                 jsonBody,
                 response -> {
-                    Log.d("ServerResponse", "Odpowiedź serwera: " + response.toString());
-                    textViewError.setText("");
-                    textViewError.setVisibility(View.GONE);
-                    Toast.makeText(MainBoard.this, "Serwer: " + response.toString(), Toast.LENGTH_SHORT).show();
+                    fetchMedications();
+                    Toast.makeText(MainBoard.this, "Lek został dodany!", Toast.LENGTH_SHORT).show();
                 },
                 error -> {
-                    String errorMessage = "Błąd połączenia: ";
-                    if (error.networkResponse != null) {
-                        errorMessage += "Kod błędu: " + error.networkResponse.statusCode;
-                        try {
-                            String responseBody = new String(error.networkResponse.data, "utf-8");
-                            Log.e("ErrorResponse", "Błąd serwera: " + responseBody);
-                            errorMessage += " - " + responseBody;
-                        } catch (Exception e) {
-                            errorMessage += " - Nie udało się odczytać odpowiedzi błędu.";
-                            Log.e("ErrorResponse", "Wyjątek przy odczycie odpowiedzi błędu", e);
-                        }
-                    } else {
-                        errorMessage += "Brak połączenia z serwerem.";
-                    }
-                    textViewError.setText(errorMessage);
+                    textViewError.setText("Błąd dodawania leku.");
                     textViewError.setVisibility(View.VISIBLE);
-                    Log.e("RequestError", "Błąd żądania", error);
-                }
-        ) {
+                }) {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
