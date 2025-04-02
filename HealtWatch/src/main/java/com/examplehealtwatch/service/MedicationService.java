@@ -9,10 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class MedicationService {
@@ -49,6 +46,7 @@ public class MedicationService {
         List<Map<String, String>> result = new ArrayList<>();
         for (Medication medication : medications) {
             Map<String, String> medicationData = new HashMap<>();
+            medicationData.put("id", medication.getId().toString());  // Konwersja Long na String
             medicationData.put("name", medication.getName());
             medicationData.put("dosage", medication.getDosage());
             medicationData.put("time", medication.getTime());
@@ -57,5 +55,16 @@ public class MedicationService {
         }
 
         return result;
+    }
+
+    public boolean deleteMedication(Long id, Long userId) {
+        Optional<Medication> medication = medicationRepository.findById(id);
+
+        if (medication.isPresent() && medication.get().getUser().getId().equals(userId)) {
+            medicationRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

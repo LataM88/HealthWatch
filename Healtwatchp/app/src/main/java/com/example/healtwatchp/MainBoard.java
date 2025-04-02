@@ -12,16 +12,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.healtwatchp.adapter.Medication;
 import com.example.healtwatchp.adapter.MedicationAdapter;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,39 +40,70 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainBoard extends AppCompatActivity {
+public class MainBoard extends AppCompatActivity implements MedicationAdapter.OnDeleteClickListener {
 
     EditText nameText, dosageText;
-    Button timeButton, addButton;
+    Button timeButton, addButton, cancelButton;
     TextView textViewError;
     String selectedTime = "";
     String apiKey = "";
+    FloatingActionButton fabAdd;
+    CardView bottomPanel;
+    ChipGroup dayChipGroup;
 
     RecyclerView recyclerView;
     MedicationAdapter adapter;
     ArrayList<Medication> medicationList;
+    ArrayList<Medication> allMedications = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainboard);
 
-        nameText = findViewById(R.id.name);
-        dosageText = findViewById(R.id.dosage);
-        timeButton = findViewById(R.id.select_time);
-        addButton = findViewById(R.id.add);
-        textViewError = findViewById(R.id.error_message);
-
-        recyclerView = findViewById(R.id.recycler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        medicationList = new ArrayList<>();
-        adapter = new MedicationAdapter(medicationList);
-        recyclerView.setAdapter(adapter);
+        initViews();
+        setupListeners();
+        setupRecyclerView();
 
         apiKey = getIntent().getStringExtra("apiKey");
         Log.d("MainBoard", "Otrzymano API Key: " + apiKey);
 
+        bottomPanel.setVisibility(View.GONE);
+
         fetchMedications();
+    }
+
+    private void initViews() {
+        nameText = findViewById(R.id.name);
+        dosageText = findViewById(R.id.dosage);
+        timeButton = findViewById(R.id.select_time);
+        addButton = findViewById(R.id.add);
+        cancelButton = findViewById(R.id.cancel_add);
+        textViewError = findViewById(R.id.error_message);
+        fabAdd = findViewById(R.id.fab_add);
+        bottomPanel = findViewById(R.id.bottom_panel);
+        dayChipGroup = findViewById(R.id.day_chip_group);
+        recyclerView = findViewById(R.id.recycler);
+    }
+
+    private void setupRecyclerView() {
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        medicationList = new ArrayList<>();
+        adapter = new MedicationAdapter(medicationList, this);
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void setupListeners() {
+        fabAdd.setOnClickListener(v -> {
+            clearForm();
+            bottomPanel.setVisibility(View.VISIBLE);
+            fabAdd.hide();
+        });
+
+        cancelButton.setOnClickListener(v -> {
+            bottomPanel.setVisibility(View.GONE);
+            fabAdd.show();
+        });
 
         timeButton.setOnClickListener(v -> {
             Calendar calendar = Calendar.getInstance();
@@ -95,13 +134,38 @@ public class MainBoard extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.button_monday).setOnClickListener(v -> filterMedicationsByDay("Pon"));
-        findViewById(R.id.button_tuesday).setOnClickListener(v -> filterMedicationsByDay("Wt"));
-        findViewById(R.id.button_wednesday).setOnClickListener(v -> filterMedicationsByDay("Śr"));
-        findViewById(R.id.button_thursday).setOnClickListener(v -> filterMedicationsByDay("Czw"));
-        findViewById(R.id.button_friday).setOnClickListener(v -> filterMedicationsByDay("Pt"));
-        findViewById(R.id.button_saturday).setOnClickListener(v -> filterMedicationsByDay("Sob"));
-        findViewById(R.id.button_sunday).setOnClickListener(v -> filterMedicationsByDay("Ndz"));
+        setupDayButtons();
+    }
+
+    private void setupDayButtons() {
+        dayChipGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == View.NO_ID) {
+                adapter.updateData(new ArrayList<>(allMedications));
+                return;
+            }
+
+            Chip selectedChip = findViewById(checkedId);
+            if (selectedChip != null) {
+                filterMedicationsByDay(selectedChip.getText().toString());
+            }
+        });
+    }
+
+    private void clearForm() {
+        nameText.setText("");
+        dosageText.setText("");
+        timeButton.setText("Wybierz godzinę");
+        selectedTime = "";
+
+        ((CheckBox) findViewById(R.id.checkbox_monday)).setChecked(false);
+        ((CheckBox) findViewById(R.id.checkbox_tuesday)).setChecked(false);
+        ((CheckBox) findViewById(R.id.checkbox_wednesday)).setChecked(false);
+        ((CheckBox) findViewById(R.id.checkbox_thursday)).setChecked(false);
+        ((CheckBox) findViewById(R.id.checkbox_friday)).setChecked(false);
+        ((CheckBox) findViewById(R.id.checkbox_saturday)).setChecked(false);
+        ((CheckBox) findViewById(R.id.checkbox_sunday)).setChecked(false);
+
+        textViewError.setVisibility(View.GONE);
     }
 
     private String getSelectedDays() {
@@ -116,8 +180,6 @@ public class MainBoard extends AppCompatActivity {
         return TextUtils.join(", ", selectedDays);
     }
 
-    private ArrayList<Medication> allMedications = new ArrayList<>();
-
     private void fetchMedications() {
         String url = "http://10.0.2.2:8080/api/medications";
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -128,18 +190,36 @@ public class MainBoard extends AppCompatActivity {
                 null,
                 response -> {
                     try {
+                        Log.d("FetchMedications", "Cała odpowiedź API: " + response.toString());
+
                         medicationList.clear();
                         allMedications.clear();
                         for (int i = 0; i < response.length(); i++) {
                             JSONObject jsonObject = response.getJSONObject(i);
-                            Medication medication = new Medication(
-                                    jsonObject.getString("name"),
-                                    jsonObject.getString("dosage"),
-                                    jsonObject.getString("time"),
-                                    jsonObject.getString("days")
-                            );
-                            medicationList.add(medication);
-                            allMedications.add(medication);
+                            Log.d("FetchMedications", "Obiekt JSON: " + jsonObject.toString());
+
+                            long id = -1;
+                            try {
+                                id = jsonObject.getLong("id");
+                                if (id <= 0) {
+                                    Log.e("FetchMedications", "Brak poprawnego ID w obiekcie: " + jsonObject.toString());
+                                    id = -1;
+                                }
+                            } catch (Exception e) {
+                                Log.e("FetchMedications", "Błąd podczas parsowania ID: " + jsonObject.toString(), e);
+                            }
+
+                            if (id != -1) {
+                                Medication medication = new Medication(
+                                        id,
+                                        jsonObject.getString("name"),
+                                        jsonObject.getString("dosage"),
+                                        jsonObject.getString("time"),
+                                        jsonObject.getString("days")
+                                );
+                                medicationList.add(medication);
+                                allMedications.add(medication);
+                            }
                         }
                         adapter.updateData(new ArrayList<>(medicationList));
                     } catch (JSONException e) {
@@ -160,6 +240,7 @@ public class MainBoard extends AppCompatActivity {
         };
         queue.add(jsonArrayRequest);
     }
+
 
     private void filterMedicationsByDay(String selectedDay) {
         if (selectedDay == null) {
@@ -199,6 +280,8 @@ public class MainBoard extends AppCompatActivity {
                 response -> {
                     fetchMedications();
                     Toast.makeText(MainBoard.this, "Lek został dodany!", Toast.LENGTH_SHORT).show();
+                    bottomPanel.setVisibility(View.GONE);
+                    fabAdd.show();
                 },
                 error -> {
                     textViewError.setText("Błąd dodawania leku.");
@@ -213,5 +296,67 @@ public class MainBoard extends AppCompatActivity {
             }
         };
         queue.add(jsonObjectRequest);
+    }
+
+    @Override
+    public void onDeleteClick(int position, Medication medication) {
+        Log.d("DELETE", "Próbuję usunąć lek: " + medication.getName() + ", ID: " + medication.getId());
+        deleteMedicationFromServer(medication, position);
+    }
+
+    private void deleteMedicationFromServer(Medication medication, int position) {
+        if (medication.getId() == null) {
+            Toast.makeText(MainBoard.this, "Nie można usunąć leku bez ID!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://10.0.2.2:8080/api/medication/" + medication.getId();
+
+        // Zakładając, że backend wymaga danych leku do usunięcia
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("name", medication.getName());
+            jsonBody.put("dosage", medication.getDosage());
+            jsonBody.put("time", medication.getTime());
+            jsonBody.put("days", medication.getDays());
+        } catch (JSONException e) {
+            Toast.makeText(MainBoard.this, "Błąd tworzenia danych JSON!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Używamy niestandardowego StringRequest z metodą DELETE
+        StringRequest deleteRequest = new StringRequest(
+                Request.Method.DELETE,
+                url,
+                response -> {
+                    // Usunięcie z lokalnej listy
+                    adapter.removeItem(position);
+
+                    // Usunięcie z allMedications
+                    for (int i = 0; i < allMedications.size(); i++) {
+                        Medication med = allMedications.get(i);
+                        if (med.getName().equals(medication.getName()) &&
+                                med.getDosage().equals(medication.getDosage()) &&
+                                med.getTime().equals(medication.getTime())) {
+                            allMedications.remove(i);
+                            break;
+                        }
+                    }
+
+                    Toast.makeText(MainBoard.this, "Lek został usunięty!", Toast.LENGTH_SHORT).show();
+                },
+                error -> {
+                    Toast.makeText(MainBoard.this, "Błąd usuwania leku!", Toast.LENGTH_SHORT).show();
+                    Log.e("DeleteMedication", "Błąd: " + error.toString());
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Log.d("DELETE", "Wysyłanie API Key: " + apiKey);
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", apiKey);
+                return headers;
+            }
+        };
+        queue.add(deleteRequest);
     }
 }
