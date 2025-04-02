@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +34,7 @@ import java.util.Map;
 
 public class MainBoard extends AppCompatActivity {
 
-    EditText nameText, dosageText, daysText;
+    EditText nameText, dosageText;
     Button timeButton, addButton;
     TextView textViewError;
     String selectedTime = "";
@@ -50,7 +51,6 @@ public class MainBoard extends AppCompatActivity {
 
         nameText = findViewById(R.id.name);
         dosageText = findViewById(R.id.dosage);
-        daysText = findViewById(R.id.selected_days);
         timeButton = findViewById(R.id.select_time);
         addButton = findViewById(R.id.add);
         textViewError = findViewById(R.id.error_message);
@@ -83,7 +83,7 @@ public class MainBoard extends AppCompatActivity {
         addButton.setOnClickListener(v -> {
             String name = nameText.getText().toString();
             String dosage = dosageText.getText().toString();
-            String days = daysText.getText().toString();
+            String days = getSelectedDays();
 
             if (TextUtils.isEmpty(name) || TextUtils.isEmpty(dosage) || TextUtils.isEmpty(selectedTime) || TextUtils.isEmpty(days)) {
                 textViewError.setText("Wszystkie pola muszą być wypełnione!");
@@ -94,13 +94,34 @@ public class MainBoard extends AppCompatActivity {
                 sendMedicationToServer(name, dosage, selectedTime, days);
             }
         });
+
+        findViewById(R.id.button_monday).setOnClickListener(v -> filterMedicationsByDay("Pon"));
+        findViewById(R.id.button_tuesday).setOnClickListener(v -> filterMedicationsByDay("Wt"));
+        findViewById(R.id.button_wednesday).setOnClickListener(v -> filterMedicationsByDay("Śr"));
+        findViewById(R.id.button_thursday).setOnClickListener(v -> filterMedicationsByDay("Czw"));
+        findViewById(R.id.button_friday).setOnClickListener(v -> filterMedicationsByDay("Pt"));
+        findViewById(R.id.button_saturday).setOnClickListener(v -> filterMedicationsByDay("Sob"));
+        findViewById(R.id.button_sunday).setOnClickListener(v -> filterMedicationsByDay("Ndz"));
     }
+
+    private String getSelectedDays() {
+        ArrayList<String> selectedDays = new ArrayList<>();
+        if (((CheckBox) findViewById(R.id.checkbox_monday)).isChecked()) selectedDays.add("Pon");
+        if (((CheckBox) findViewById(R.id.checkbox_tuesday)).isChecked()) selectedDays.add("Wt");
+        if (((CheckBox) findViewById(R.id.checkbox_wednesday)).isChecked()) selectedDays.add("Śr");
+        if (((CheckBox) findViewById(R.id.checkbox_thursday)).isChecked()) selectedDays.add("Czw");
+        if (((CheckBox) findViewById(R.id.checkbox_friday)).isChecked()) selectedDays.add("Pt");
+        if (((CheckBox) findViewById(R.id.checkbox_saturday)).isChecked()) selectedDays.add("Sob");
+        if (((CheckBox) findViewById(R.id.checkbox_sunday)).isChecked()) selectedDays.add("Ndz");
+        return TextUtils.join(", ", selectedDays);
+    }
+
+    private ArrayList<Medication> allMedications = new ArrayList<>();
 
     private void fetchMedications() {
         String url = "http://10.0.2.2:8080/api/medications";
-        Log.d("FetchMedications", "Rozpoczynam pobieranie leków");
-
         RequestQueue queue = Volley.newRequestQueue(this);
+
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
@@ -108,9 +129,9 @@ public class MainBoard extends AppCompatActivity {
                 response -> {
                     try {
                         medicationList.clear();
+                        allMedications.clear();
                         for (int i = 0; i < response.length(); i++) {
                             JSONObject jsonObject = response.getJSONObject(i);
-                            Log.d("FetchMedications", "Dodawanie leku: " + jsonObject);
                             Medication medication = new Medication(
                                     jsonObject.getString("name"),
                                     jsonObject.getString("dosage"),
@@ -118,8 +139,9 @@ public class MainBoard extends AppCompatActivity {
                                     jsonObject.getString("days")
                             );
                             medicationList.add(medication);
+                            allMedications.add(medication);
                         }
-                        adapter.notifyDataSetChanged();
+                        adapter.updateData(new ArrayList<>(medicationList));
                     } catch (JSONException e) {
                         Log.e("FetchMedications", "Błąd parsowania JSON", e);
                     }
@@ -136,8 +158,22 @@ public class MainBoard extends AppCompatActivity {
                 return headers;
             }
         };
-
         queue.add(jsonArrayRequest);
+    }
+
+    private void filterMedicationsByDay(String selectedDay) {
+        if (selectedDay == null) {
+            adapter.updateData(new ArrayList<>(allMedications));
+            return;
+        }
+
+        ArrayList<Medication> filteredList = new ArrayList<>();
+        for (Medication medication : allMedications) {
+            if (medication.getDays().contains(selectedDay)) {
+                filteredList.add(medication);
+            }
+        }
+        adapter.updateData(filteredList);
     }
 
     private void sendMedicationToServer(String name, String dosage, String time, String days) {
@@ -176,7 +212,6 @@ public class MainBoard extends AppCompatActivity {
                 return headers;
             }
         };
-
         queue.add(jsonObjectRequest);
     }
 }

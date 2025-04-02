@@ -7,6 +7,16 @@
     android:background="@drawable/background">
 
     <TextView
+        android:id="@+id/error_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:textColor="@android:color/holo_red_dark"
+        android:padding="16dp"
+        android:layout_marginTop="8dp"
+        android:textSize="16sp" />
+
+    <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,68 +27,173 @@
         android:fontFamily="@font/kanitmedium"
         android:textColor="@color/blue_700" />
 
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/button_monday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pon" />
+
+            <Button
+                android:id="@+id/button_tuesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wt" />
+
+            <Button
+                android:id="@+id/button_wednesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Śr" />
+
+            <Button
+                android:id="@+id/button_thursday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Czw" />
+
+            <Button
+                android:id="@+id/button_friday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pt" />
+
+            <Button
+                android:id="@+id/button_saturday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sob" />
+
+            <Button
+                android:id="@+id/button_sunday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ndz" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- RecyclerView do wyświetlania leków dla wybranego dnia -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:scrollbars="vertical"/>
+        android:scrollbars="vertical" />
 
+    <!-- Sekcja dodawania nowego leku -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="#E3E1E1"
+        android:orientation="vertical"
         android:padding="16dp">
-
-        <TextView
-            android:id="@+id/error_message"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:textColor="@android:color/holo_red_dark"
-            android:padding="16dp"
-            android:layout_marginTop="8dp"
-            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/custom_edixtext"
             android:hint="Nazwa leku"
-            android:background="@drawable/custom_edixtext" />
+            android:padding="7dp" />
 
         <EditText
             android:id="@+id/dosage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/custom_edixtext"
             android:hint="Dawka"
-            android:background="@drawable/custom_edixtext" />
+            android:padding="7dp" />
 
         <Button
             android:id="@+id/select_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/custom_button"
+            android:background="@drawable/custom_button_stroke"
+            android:padding="2dp"
             android:text="Wybierz godzinę" />
 
-        <EditText
-            android:id="@+id/selected_days"
+        <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Wybrane dni (np. Pon, Śr)"
-            android:background="@drawable/custom_edixtext" />
+            android:layout_marginTop="8dp"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <CheckBox
+                    android:id="@+id/checkbox_monday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pon" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_tuesday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Wt" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_wednesday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Śr" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_thursday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Czw" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_friday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pt" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_saturday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sob" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_sunday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ndz" />
+            </LinearLayout>
+        </HorizontalScrollView>
 
         <Button
             android:id="@+id/add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/custom_button"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/custom_button_startup"
+            android:padding="12dp"
             android:text="Dodaj"
             android:textColor="@color/white"
-            android:textSize="18sp"
-            android:padding="12dp"
-            android:layout_marginTop="8dp" />
+            android:textSize="18sp" />
 
     </LinearLayout>
 

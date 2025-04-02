@@ -1,5 +1,6 @@
 package com.example.healtwatchp.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,13 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
         return medications.size();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    public void updateData(ArrayList<Medication> newMedications) {
+        this.medications.clear();
+        this.medications.addAll(newMedications);
+        notifyDataSetChanged();
+    }
+
     static class MedicationViewHolder extends RecyclerView.ViewHolder {
         TextView nameTextView, dosageTextView, timeTextView, daysTextView;
 
@@ -54,4 +62,3 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
         }
     }
 }
-
