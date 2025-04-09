@@ -52,4 +52,26 @@ public class MedicationController {
 
         return ResponseEntity.ok(medications);
     }
+
+    @DeleteMapping("/medication/{id}")
+    public ResponseEntity<String> deleteMedication(@PathVariable Long id, @RequestHeader("Authorization") String apiKey) {
+        System.out.println("Otrzymano DELETE dla leku ID: " + id);
+        System.out.println("API Key w żądaniu: " + apiKey);
+
+        if (!loginService.validateApiKey(apiKey)) {
+            System.out.println("Nieprawidłowy klucz API!");
+            return ResponseEntity.status(403).body("Invalid API Key");
+        }
+
+        Long userId = loginService.getUserIdFromApiKey(apiKey);
+        boolean deleted = medicationService.deleteMedication(id, userId);
+
+        if (deleted) {
+            System.out.println("Lek usunięty poprawnie!");
+            return ResponseEntity.ok("{\"message\": \"Lek usunięty!\"}");
+        } else {
+            System.out.println("Lek nie znaleziony lub brak uprawnień!");
+            return ResponseEntity.status(404).body("{\"message\": \"Lek nie znaleziony lub brak uprawnień!\"}");
+        }
+    }
 }

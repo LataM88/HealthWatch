@@ -1,8 +1,10 @@
 package com.example.healtwatchp.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,9 +17,15 @@ import java.util.ArrayList;
 public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.MedicationViewHolder> {
 
     private ArrayList<Medication> medications;
+    private OnDeleteClickListener deleteListener;
 
-    public MedicationAdapter(ArrayList<Medication> medications) {
+    public interface OnDeleteClickListener {
+        void onDeleteClick(int position, Medication medication);
+    }
+
+    public MedicationAdapter(ArrayList<Medication> medications, OnDeleteClickListener listener) {
         this.medications = medications;
+        this.deleteListener = listener;
     }
 
     @NonNull
@@ -35,6 +43,12 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
         holder.dosageTextView.setText("Dawka: " + medication.getDosage());
         holder.timeTextView.setText("Godzina: " + medication.getTime());
         holder.daysTextView.setText("Dni: " + medication.getDays());
+
+        holder.deleteButton.setOnClickListener(view -> {
+            if (deleteListener != null) {
+                deleteListener.onDeleteClick(holder.getAdapterPosition(), medication);
+            }
+        });
     }
 
     @Override
@@ -42,8 +56,23 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
         return medications.size();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    public void updateData(ArrayList<Medication> newMedications) {
+        this.medications.clear();
+        this.medications.addAll(newMedications);
+        notifyDataSetChanged();
+    }
+
+    public void removeItem(int position) {
+        if (position >= 0 && position < medications.size()) {
+            medications.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
     static class MedicationViewHolder extends RecyclerView.ViewHolder {
         TextView nameTextView, dosageTextView, timeTextView, daysTextView;
+        ImageButton deleteButton;
 
         public MedicationViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -51,7 +80,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
             dosageTextView = itemView.findViewById(R.id.medication_dosage);
             timeTextView = itemView.findViewById(R.id.medication_time);
             daysTextView = itemView.findViewById(R.id.medication_days);
+            deleteButton = itemView.findViewById(R.id.delete_button);
         }
     }
 }
-

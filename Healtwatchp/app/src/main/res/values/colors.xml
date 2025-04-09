@@ -7,4 +7,6 @@
     <color name="red">#FF0000</color>
     <color name="selected_day">#4CAF50</color>
     <color name="unselected_day">#E0E0E0</color>
+    <color name="chip_default">#FF6200EE</color>
+    <color name="chip_stroke">#FF3700B3</color>
 </resources>
