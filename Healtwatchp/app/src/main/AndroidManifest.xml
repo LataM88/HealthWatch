@@ -36,6 +36,11 @@
             android:name=".MainBoard"
             android:exported="true"/>
 
+        <activity
+            android:name=".AppointmentsBoard"
+            android:exported="true" />
+
+
     </application>
 
 </manifest>

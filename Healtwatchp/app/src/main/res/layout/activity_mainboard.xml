@@ -34,6 +34,15 @@
             android:fontFamily="@font/kanitmedium"
             android:textColor="@color/blue_700" />
 
+        <Button
+            android:id="@+id/button_open_appointments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Zobacz wizyty"
+            android:layout_margin="16dp"
+            />
+
+
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

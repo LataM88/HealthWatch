@@ -39,17 +39,20 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import android.content.Intent;
+
 
 public class MainBoard extends AppCompatActivity implements MedicationAdapter.OnDeleteClickListener {
 
     EditText nameText, dosageText;
-    Button timeButton, addButton, cancelButton;
+    Button timeButton, addButton, cancelButton, buttonAppointments;
     TextView textViewError;
     String selectedTime = "";
     String apiKey = "";
     FloatingActionButton fabAdd;
     CardView bottomPanel;
     ChipGroup dayChipGroup;
+
 
     RecyclerView recyclerView;
     MedicationAdapter adapter;
@@ -84,6 +87,7 @@ public class MainBoard extends AppCompatActivity implements MedicationAdapter.On
         bottomPanel = findViewById(R.id.bottom_panel);
         dayChipGroup = findViewById(R.id.day_chip_group);
         recyclerView = findViewById(R.id.recycler);
+        buttonAppointments = findViewById(R.id.button_open_appointments);
     }
 
     private void setupRecyclerView() {
@@ -133,6 +137,13 @@ public class MainBoard extends AppCompatActivity implements MedicationAdapter.On
                 sendMedicationToServer(name, dosage, selectedTime, days);
             }
         });
+
+        buttonAppointments.setOnClickListener(v -> {
+            Intent intent = new Intent(MainBoard.this, AppointmentsBoard.class);
+            intent.putExtra("apiKey", apiKey);
+            startActivity(intent);
+        });
+
 
         setupDayButtons();
     }
@@ -312,7 +323,6 @@ public class MainBoard extends AppCompatActivity implements MedicationAdapter.On
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://10.0.2.2:8080/api/medication/" + medication.getId();
 
-        // Zakładając, że backend wymaga danych leku do usunięcia
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("name", medication.getName());
@@ -324,7 +334,6 @@ public class MainBoard extends AppCompatActivity implements MedicationAdapter.On
             return;
         }
 
-        // Używamy niestandardowego StringRequest z metodą DELETE
         StringRequest deleteRequest = new StringRequest(
                 Request.Method.DELETE,
                 url,
