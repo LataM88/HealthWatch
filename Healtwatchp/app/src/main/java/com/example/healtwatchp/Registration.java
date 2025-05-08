@@ -55,13 +55,32 @@ public class Registration extends AppCompatActivity {
                 email = String.valueOf(textInputEditTextEmail.getText());
                 password = String.valueOf(textInputEditTextPassword.getText());
 
-                if (name.isEmpty() || surname.isEmpty() || email.isEmpty() || password.isEmpty()) {
-                    textViewError.setText("Wszystkie pola muszą być wypełnione!");
+                if (name.trim().isEmpty()) {
+                    textViewError.setText("Imię jest wymagane");
                     textViewError.setVisibility(View.VISIBLE);
                     return;
-                } else {
-                    textViewError.setVisibility(View.GONE);
                 }
+
+                if (surname.trim().isEmpty()) {
+                    textViewError.setText("Nazwisko jest wymagane");
+                    textViewError.setVisibility(View.VISIBLE);
+                    return;
+                }
+
+                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    textViewError.setText("Nieprawidłowy adres email");
+                    textViewError.setVisibility(View.VISIBLE);
+                    return;
+                }
+
+                if (password.length() < 6) {
+                    textViewError.setText("Hasło musi mieć co najmniej 6 znaków");
+                    textViewError.setVisibility(View.VISIBLE);
+                    return;
+                }
+
+                textViewError.setVisibility(View.GONE);
+
 
                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
                 String url = "http://10.0.2.2:8080/api/register";

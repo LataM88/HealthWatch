@@ -111,6 +111,24 @@ public class AppointmentsBoard extends AppCompatActivity implements AppointmentA
             } else {
                 textViewError.setVisibility(View.GONE);
                 sendAppointmentToServer(doctorName, date, selectedTime, notes);
+                // Powiadomienie 2 godziny wcześniej
+                String[] parts = selectedTime.split(":");
+                int hour = Integer.parseInt(parts[0]);
+                int minute = Integer.parseInt(parts[1]);
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.HOUR_OF_DAY, hour);
+                cal.set(Calendar.MINUTE, minute);
+                cal.set(Calendar.SECOND, 0);
+                cal.set(Calendar.MILLISECOND, 0);
+                cal.add(Calendar.HOUR_OF_DAY, -2);
+
+                NotificationUtils.scheduleNotification(
+                        AppointmentsBoard.this,
+                        "Zbliża się wizyta!",
+                        "Wizyta u " + doctorName + " o " + selectedTime,
+                        cal
+                );
+
             }
         });
     }

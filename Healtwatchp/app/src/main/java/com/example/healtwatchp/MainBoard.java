@@ -135,6 +135,24 @@ public class MainBoard extends AppCompatActivity implements MedicationAdapter.On
             } else {
                 textViewError.setVisibility(View.GONE);
                 sendMedicationToServer(name, dosage, selectedTime, days);
+                // Powiadomienie 30 minut wcześniej
+                String[] parts = selectedTime.split(":");
+                int hour = Integer.parseInt(parts[0]);
+                int minute = Integer.parseInt(parts[1]);
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.HOUR_OF_DAY, hour);
+                cal.set(Calendar.MINUTE, minute);
+                cal.set(Calendar.SECOND, 0);
+                cal.set(Calendar.MILLISECOND, 0);
+                cal.add(Calendar.MINUTE, -30);
+
+                NotificationUtils.scheduleNotification(
+                        MainBoard.this,
+                        "Czas na lek!",
+                        "Weź " + name + " o " + selectedTime,
+                        cal
+                );
+
             }
         });
 

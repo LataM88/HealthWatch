@@ -58,13 +58,20 @@ public class Login extends AppCompatActivity {
                 email = textInputEditTextEmail.getText() != null ? textInputEditTextEmail.getText().toString().trim() : "";
                 password = textInputEditTextPassword.getText() != null ? textInputEditTextPassword.getText().toString().trim() : "";
 
-                if (email.isEmpty() || password.isEmpty()) {
-                    textViewError.setText("Wszystkie pola muszą być wypełnione!");
+                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    textViewError.setText("Nieprawidłowy adres email");
                     textViewError.setVisibility(View.VISIBLE);
                     return;
-                } else {
-                    textViewError.setVisibility(View.GONE);
                 }
+
+                if (password.length() < 6) {
+                    textViewError.setText("Hasło musi mieć co najmniej 6 znaków");
+                    textViewError.setVisibility(View.VISIBLE);
+                    return;
+                }
+
+                textViewError.setVisibility(View.GONE);
+
 
                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
                 String url = "http://10.0.2.2:8080/api/login";
