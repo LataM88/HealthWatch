@@ -27,6 +27,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.healtwatchp.adapter.Medication;
 import com.example.healtwatchp.adapter.MedicationAdapter;
+import com.example.healtwatchp.notifications.NotificationHelper;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -135,6 +136,10 @@ public class MainBoard extends AppCompatActivity implements MedicationAdapter.On
             } else {
                 textViewError.setVisibility(View.GONE);
                 sendMedicationToServer(name, dosage, selectedTime, days);
+                // Integracja z NotificationHelper
+                Medication medication = new Medication(-1L, name, dosage, selectedTime, days);
+                NotificationHelper notificationHelper = new NotificationHelper(MainBoard.this);
+                notificationHelper.scheduleMedicationNotification(medication);
             }
         });
 

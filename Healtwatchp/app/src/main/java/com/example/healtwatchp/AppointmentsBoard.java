@@ -23,6 +23,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.healtwatchp.adapter.Appointment;
 import com.example.healtwatchp.adapter.AppointmentAdapter;
+import com.example.healtwatchp.notifications.NotificationHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
@@ -111,6 +112,10 @@ public class AppointmentsBoard extends AppCompatActivity implements AppointmentA
             } else {
                 textViewError.setVisibility(View.GONE);
                 sendAppointmentToServer(doctorName, date, selectedTime, notes);
+                // Integracja z NotificationHelper
+                Appointment appointment = new Appointment(-1L, doctorName, date, selectedTime, notes);
+                NotificationHelper notificationHelper = new NotificationHelper(AppointmentsBoard.this);
+                notificationHelper.scheduleAppointmentNotification(appointment);
             }
         });
     }
