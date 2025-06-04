@@ -1,298 +1,320 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/noicon_background">
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/header_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
-
-        <TextView
-            android:id="@+id/error_message"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:textColor="@android:color/holo_red_dark"
-            android:padding="8dp"
-            android:layout_marginBottom="8dp"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Twoje Leki"
-            android:textSize="28sp"
-            android:layout_marginBottom="12dp"
-            android:textStyle="bold"
-            android:fontFamily="@font/kanitmedium"
-            android:textColor="@color/blue_700" />
-
-        <Button
-            android:id="@+id/button_open_appointments"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Zobacz wizyty"
-            android:layout_margin="16dp"
-            />
-
-
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fillViewport="true"
-            android:scrollbars="none">
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/day_chip_group"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:singleSelection="true"
-                android:layout_marginBottom="8dp">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/button_monday"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/blue_700"
-                    android:text="Pon"
-                    android:textColor="@color/white" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/button_tuesday"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:backgroundTint="@color/blue_700"
-                    android:text="Wt" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/button_wednesday"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:backgroundTint="@color/blue_700"
-                    android:text="Śr" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/button_thursday"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:backgroundTint="@color/blue_700"
-                    android:text="Czw" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/button_friday"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:backgroundTint="@color/blue_700"
-                    android:text="Pt" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/button_saturday"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:backgroundTint="@color/blue_700"
-                    android:text="Sob" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/button_sunday"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:backgroundTint="@color/blue_700"
-                    android:text="Ndz" />
-            </com.google.android.material.chip.ChipGroup>
-        </HorizontalScrollView>
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_panel"
-        android:layout_below="@id/header_layout"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="-5dp"
-        android:clipToPadding="false"
-        android:padding="8dp"
-        android:scrollbars="vertical" />
+        android:layout_height="match_parent">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/bottom_panel"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="16dp"
-        android:contentDescription="Dodaj lek"
-        android:src="@drawable/add_button"
-        app:backgroundTint="@android:color/transparent" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/bottom_panel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:cardElevation="8dp">
-
-        <LinearLayout
-            android:id="@+id/add_medication_panel"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="#E3E1E1"
-            android:padding="12dp">
+            android:background="@color/blue_700"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:title="Twoje Leki"
+            app:titleTextColor="@android:color/white" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Dodaj nowy lek"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:layout_marginBottom="8dp" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-                <EditText
-                    android:id="@+id/name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Nazwa leku"
-                    android:inputType="text"
-                    android:maxLines="1" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-                <EditText
-                    android:id="@+id/dosage"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Dawka"
-                    android:inputType="text"
-                    android:maxLines="1" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                android:id="@+id/select_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_button_stroke"
-                android:text="Wybierz godzinę"
-                android:textColor="@color/blue_700"
-                android:layout_marginBottom="8dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Dni tygodnia:"
-                android:layout_marginBottom="4dp" />
-
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="none">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <CheckBox
-                        android:id="@+id/checkbox_monday"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Pon" />
-
-                    <CheckBox
-                        android:id="@+id/checkbox_tuesday"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Wt" />
-
-                    <CheckBox
-                        android:id="@+id/checkbox_wednesday"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Śr" />
-
-                    <CheckBox
-                        android:id="@+id/checkbox_thursday"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Czw" />
-
-                    <CheckBox
-                        android:id="@+id/checkbox_friday"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Pt" />
-
-                    <CheckBox
-                        android:id="@+id/checkbox_saturday"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sob" />
-
-                    <CheckBox
-                        android:id="@+id/checkbox_sunday"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Ndz" />
-                </LinearLayout>
-            </HorizontalScrollView>
+        <RelativeLayout
+            android:id="@+id/main_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/noicon_background">
 
             <LinearLayout
+                android:id="@+id/header_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="8dp">
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <Button
-                    android:id="@+id/cancel_add"
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/error_message"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Anuluj"
-                    android:textColor="@color/blue_700"
-                    android:layout_marginEnd="4dp"
-                    android:background="@drawable/custom_button_stroke" />
+                    android:visibility="gone"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:padding="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:textSize="14sp" />
 
-                <Button
-                    android:id="@+id/add"
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="4dp"
-                    android:text="Dodaj"
-                    android:background="@drawable/custom_button_startup"
-                    android:textColor="@color/white" />
+                    android:text="Lekarstwa"
+                    android:textSize="28sp"
+                    android:layout_marginBottom="12dp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/kanitmedium"
+                    android:textColor="@color/blue_700" />
+
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fillViewport="true"
+                    android:scrollbars="none">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/day_chip_group"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:singleSelection="true"
+                        android:layout_marginBottom="8dp">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/button_monday"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/blue_700"
+                            android:text="Pon"
+                            android:textColor="@color/white" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/button_tuesday"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:backgroundTint="@color/blue_700"
+                            android:text="Wt" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/button_wednesday"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:backgroundTint="@color/blue_700"
+                            android:text="Śr" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/button_thursday"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:backgroundTint="@color/blue_700"
+                            android:text="Czw" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/button_friday"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:backgroundTint="@color/blue_700"
+                            android:text="Pt" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/button_saturday"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:backgroundTint="@color/blue_700"
+                            android:text="Sob" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/button_sunday"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:backgroundTint="@color/blue_700"
+                            android:text="Ndz" />
+                    </com.google.android.material.chip.ChipGroup>
+                </HorizontalScrollView>
             </LinearLayout>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-</RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/bottom_panel"
+                android:layout_below="@id/header_layout"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="-5dp"
+                android:clipToPadding="false"
+                android:padding="8dp"
+                android:scrollbars="vertical" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/bottom_panel"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="16dp"
+                android:contentDescription="Dodaj lek"
+                android:src="@drawable/add_button"
+                app:backgroundTint="@android:color/transparent" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/bottom_panel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                app:cardElevation="8dp">
+
+                <LinearLayout
+                    android:id="@+id/add_medication_panel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="#E3E1E1"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Dodaj nowy lek"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="8dp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <EditText
+                            android:id="@+id/name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Nazwa leku"
+                            android:inputType="text"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <EditText
+                            android:id="@+id/dosage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Dawka"
+                            android:inputType="text"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/select_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/custom_button_stroke"
+                        android:text="Wybierz godzinę"
+                        android:textColor="@color/blue_700"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Dni tygodnia:"
+                        android:layout_marginBottom="4dp" />
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <CheckBox
+                                android:id="@+id/checkbox_monday"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Pon" />
+
+                            <CheckBox
+                                android:id="@+id/checkbox_tuesday"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Wt" />
+
+                            <CheckBox
+                                android:id="@+id/checkbox_wednesday"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Śr" />
+
+                            <CheckBox
+                                android:id="@+id/checkbox_thursday"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Czw" />
+
+                            <CheckBox
+                                android:id="@+id/checkbox_friday"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Pt" />
+
+                            <CheckBox
+                                android:id="@+id/checkbox_saturday"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Sob" />
+
+                            <CheckBox
+                                android:id="@+id/checkbox_sunday"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Ndz" />
+                        </LinearLayout>
+                    </HorizontalScrollView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp">
+
+                        <Button
+                            android:id="@+id/cancel_add"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Anuluj"
+                            android:textColor="@color/blue_700"
+                            android:layout_marginEnd="4dp"
+                            android:background="@drawable/custom_button_stroke" />
+
+                        <Button
+                            android:id="@+id/add"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="4dp"
+                            android:text="Dodaj"
+                            android:background="@drawable/custom_button_startup"
+                            android:textColor="@color/white" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/activity_main_drawer"/>
+
+</androidx.drawerlayout.widget.DrawerLayout>

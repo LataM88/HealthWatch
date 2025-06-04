@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_medications"
+            android:icon="@drawable/ic_appointment"
+            android:title="Leki" />
+        <item
+            android:id="@+id/nav_appointments"
+            android:icon="@drawable/ic_medication"
+            android:title="Wizyty" />
+    </group>
+</menu>

@@ -1,166 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/noicon_background">
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/header_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/error_message"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:textColor="@android:color/holo_red_dark"
-            android:padding="8dp"
-            android:layout_marginBottom="8dp"
-            android:textSize="14sp" />
+            android:background="@color/blue_700"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:title="Wizyty"
+            app:titleTextColor="@android:color/white" />
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Twoje Wizyty"
-            android:textSize="28sp"
-            android:layout_marginBottom="12dp"
-            android:textStyle="bold"
-            android:fontFamily="@font/kanitmedium"
-            android:textColor="@color/blue_700" />
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_panel"
-        android:layout_below="@id/header_layout"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="-5dp"
-        android:clipToPadding="false"
-        android:padding="8dp"
-        android:scrollbars="vertical" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/bottom_panel"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="16dp"
-        android:contentDescription="Dodaj wizytę"
-        android:src="@drawable/add_button"
-        app:backgroundTint="@android:color/transparent" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/bottom_panel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:cardElevation="8dp">
-
-        <LinearLayout
-            android:id="@+id/add_appointment_panel"
+        <RelativeLayout
+            android:id="@+id/main_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="#E3E1E1"
-            android:padding="12dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Dodaj nową wizytę"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:layout_marginBottom="8dp" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-                <EditText
-                    android:id="@+id/doctor_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Lekarz"
-                    android:inputType="text"
-                    android:maxLines="1" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-                <EditText
-                    android:id="@+id/appointment_date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Data (YYYY-MM-DD)"
-                    android:inputType="date"
-                    android:maxLines="1" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                android:id="@+id/select_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_button_stroke"
-                android:text="Wybierz godzinę"
-                android:textColor="@color/blue_700"
-                android:layout_marginBottom="8dp" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-                <EditText
-                    android:id="@+id/appointment_notes"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Notatki"
-                    android:inputType="text"
-                    android:maxLines="2" />
-            </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="match_parent"
+            android:background="@drawable/noicon_background">
 
             <LinearLayout
+                android:id="@+id/header_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="8dp">
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <Button
-                    android:id="@+id/cancel_add"
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/error_message"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Anuluj"
-                    android:textColor="@color/blue_700"
-                    android:layout_marginEnd="4dp"
-                    android:background="@drawable/custom_button_stroke" />
+                    android:visibility="gone"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:padding="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:textSize="14sp" />
 
-                <Button
-                    android:id="@+id/add"
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="4dp"
-                    android:text="Dodaj"
-                    android:background="@drawable/custom_button_startup"
-                    android:textColor="@color/white" />
+                    android:text="Twoje Wizyty"
+                    android:textSize="28sp"
+                    android:layout_marginBottom="12dp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/kanitmedium"
+                    android:textColor="@color/blue_700" />
             </LinearLayout>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-</RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/bottom_panel"
+                android:layout_below="@id/header_layout"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="-5dp"
+                android:clipToPadding="false"
+                android:padding="8dp"
+                android:scrollbars="vertical" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/bottom_panel"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="16dp"
+                android:contentDescription="Dodaj wizytę"
+                android:src="@drawable/add_button"
+                app:backgroundTint="@android:color/transparent" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/bottom_panel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                app:cardElevation="8dp">
+
+                <LinearLayout
+                    android:id="@+id/add_appointment_panel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="#E3E1E1"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Dodaj nową wizytę"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="8dp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <EditText
+                            android:id="@+id/doctor_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Lekarz"
+                            android:inputType="text"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <EditText
+                            android:id="@+id/appointment_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Data (YYYY-MM-DD)"
+                            android:inputType="date"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/select_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/custom_button_stroke"
+                        android:text="Wybierz godzinę"
+                        android:textColor="@color/blue_700"
+                        android:layout_marginBottom="8dp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <EditText
+                            android:id="@+id/appointment_notes"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Notatki"
+                            android:inputType="text"
+                            android:maxLines="2" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp">
+
+                        <Button
+                            android:id="@+id/cancel_add"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Anuluj"
+                            android:textColor="@color/blue_700"
+                            android:layout_marginEnd="4dp"
+                            android:background="@drawable/custom_button_stroke" />
+
+                        <Button
+                            android:id="@+id/add"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="4dp"
+                            android:text="Dodaj"
+                            android:background="@drawable/custom_button_startup"
+                            android:textColor="@color/white" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/activity_main_drawer"/>
+
+</androidx.drawerlayout.widget.DrawerLayout>

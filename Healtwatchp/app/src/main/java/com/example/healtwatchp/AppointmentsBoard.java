@@ -1,17 +1,24 @@
 package com.example.healtwatchp;
 
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +32,7 @@ import com.example.healtwatchp.adapter.Appointment;
 import com.example.healtwatchp.adapter.AppointmentAdapter;
 import com.example.healtwatchp.notifications.NotificationHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,11 +56,43 @@ public class AppointmentsBoard extends AppCompatActivity implements AppointmentA
     RecyclerView recyclerView;
     AppointmentAdapter adapter;
     ArrayList<Appointment> appointmentList;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointmentboard);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.navigation_view);
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
+        }
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.nav_medications) {
+                    Intent intent = new Intent(AppointmentsBoard.this, MainBoard.class);
+                    intent.putExtra("apiKey", apiKey);
+                    startActivity(intent);
+                } else if (id == R.id.nav_appointments) {
+                    // Already in Appointments section
+                }
+                drawerLayout.closeDrawers();
+                return true;
+            }
+        });
 
         doctorNameText = findViewById(R.id.doctor_name);
         dateText = findViewById(R.id.appointment_date);
@@ -247,5 +287,13 @@ public class AppointmentsBoard extends AppCompatActivity implements AppointmentA
             }
         };
         queue.add(deleteRequest);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
