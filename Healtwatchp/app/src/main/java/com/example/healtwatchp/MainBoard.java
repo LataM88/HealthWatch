@@ -1,9 +1,11 @@
 package com.example.healtwatchp;
 
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -11,8 +13,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +37,8 @@ import com.example.healtwatchp.notifications.NotificationHelper;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import androidx.appcompat.widget.Toolbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,13 +48,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-import android.content.Intent;
 
 
 public class MainBoard extends AppCompatActivity implements MedicationAdapter.OnDeleteClickListener {
 
     EditText nameText, dosageText;
-    Button timeButton, addButton, cancelButton, buttonAppointments;
+    Button timeButton, addButton, cancelButton;
     TextView textViewError;
     String selectedTime = "";
     String apiKey = "";
@@ -54,16 +61,49 @@ public class MainBoard extends AppCompatActivity implements MedicationAdapter.On
     CardView bottomPanel;
     ChipGroup dayChipGroup;
 
-
     RecyclerView recyclerView;
     MedicationAdapter adapter;
     ArrayList<Medication> medicationList;
     ArrayList<Medication> allMedications = new ArrayList<>();
 
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    ActionBarDrawerToggle toggle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainboard);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.navigation_view);
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        toggle.setDrawerIndicatorEnabled(true);
+        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(android.R.color.white));
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.nav_medications) {
+                    // Already in Medications section
+                } else if (id == R.id.nav_appointments) {
+                    Intent intent = new Intent(MainBoard.this, AppointmentsBoard.class);
+                    intent.putExtra("apiKey", apiKey); // Pass the API key
+                    startActivity(intent);
+                } else if (id == R.id.nav_medicine_info) {
+                    Intent intent = new Intent(MainBoard.this, MedicineInfo.class);
+                    intent.putExtra("apiKey", apiKey); // Pass the API key
+                    startActivity(intent);
+                }
+                drawerLayout.closeDrawers();
+                return true;
+            }
+        });
 
         initViews();
         setupListeners();
@@ -88,7 +128,6 @@ public class MainBoard extends AppCompatActivity implements MedicationAdapter.On
         bottomPanel = findViewById(R.id.bottom_panel);
         dayChipGroup = findViewById(R.id.day_chip_group);
         recyclerView = findViewById(R.id.recycler);
-        buttonAppointments = findViewById(R.id.button_open_appointments);
     }
 
     private void setupRecyclerView() {
@@ -142,13 +181,6 @@ public class MainBoard extends AppCompatActivity implements MedicationAdapter.On
                 notificationHelper.scheduleMedicationNotification(medication);
             }
         });
-
-        buttonAppointments.setOnClickListener(v -> {
-            Intent intent = new Intent(MainBoard.this, AppointmentsBoard.class);
-            intent.putExtra("apiKey", apiKey);
-            startActivity(intent);
-        });
-
 
         setupDayButtons();
     }
@@ -372,5 +404,13 @@ public class MainBoard extends AppCompatActivity implements MedicationAdapter.On
             }
         };
         queue.add(deleteRequest);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

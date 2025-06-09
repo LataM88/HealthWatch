@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/blue_700"
+            app:title="Wyszukiwarka leków"
+            app:titleTextColor="@android:color/white" />
+
+        <RelativeLayout
+            android:id="@+id/main_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_no_top">
+
+            <!-- moved upward from 48dp to 24dp -->
+            <TextView
+                android:id="@+id/label_medicine_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wyszukaj informacje o lekach"
+                android:textColor="@color/blue_700"
+                android:textSize="21sp"
+                android:layout_marginTop="32dp"
+                android:layout_marginStart="32dp"
+                android:fontFamily="@font/kanitmedium"
+                android:layout_alignParentStart="true" />
+
+            <LinearLayout
+                android:id="@+id/search_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/label_medicine_name"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <AutoCompleteTextView
+                    android:id="@+id/medicine_name_input"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Wpisz nazwę leku..."
+                    android:textColor="@color/blue_700"
+                    android:background="@android:color/white"
+                    android:padding="12dp"
+                    android:textSize="16sp"
+                    android:completionThreshold="2"
+                    android:dropDownHeight="200dp"
+                    android:dropDownWidth="match_parent" />
+
+                <Button
+                    android:id="@+id/search_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Szukaj"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/custom_button_startup"
+                    android:backgroundTint="@color/blue_700" />
+
+            </LinearLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/search_layout"
+                android:layout_marginTop="32dp">
+
+                <TextView
+                    android:id="@+id/medicine_info_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="32dp"
+                    android:textColor="@color/blue_700"
+                    android:textSize="16sp"
+                    android:text="Informacje o leku pojawią się tutaj..." />
+
+            </ScrollView>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/activity_main_drawer" />
+
+</androidx.drawerlayout.widget.DrawerLayout>
