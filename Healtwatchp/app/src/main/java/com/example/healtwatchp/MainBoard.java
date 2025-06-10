@@ -95,11 +95,15 @@ public class MainBoard extends AppCompatActivity implements MedicationAdapter.On
                     // Already in Medications section
                 } else if (id == R.id.nav_appointments) {
                     Intent intent = new Intent(MainBoard.this, AppointmentsBoard.class);
-                    intent.putExtra("apiKey", apiKey); // Pass the API key
+                    intent.putExtra("apiKey", apiKey);
                     startActivity(intent);
                 } else if (id == R.id.nav_medicine_info) {
                     Intent intent = new Intent(MainBoard.this, MedicineInfo.class);
-                    intent.putExtra("apiKey", apiKey); // Pass the API key
+                    intent.putExtra("apiKey", apiKey);
+                    startActivity(intent);
+                } else if (id == R.id.nav_symptoms) {
+                    Intent intent = new Intent(MainBoard.this, SymptomsListActivity.class);
+                    intent.putExtra("apiKey", apiKey);
                     startActivity(intent);
                 }
                 drawerLayout.closeDrawers();

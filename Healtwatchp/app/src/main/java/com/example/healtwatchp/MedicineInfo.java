@@ -80,14 +80,18 @@ public class MedicineInfo extends AppCompatActivity {
                 int id = item.getItemId();
                 if (id == R.id.nav_medications) {
                     Intent intent = new Intent(MedicineInfo.this, MainBoard.class);
-                    intent.putExtra("apiKey", getIntent().getStringExtra("apiKey")); // Pass the apiKey
+                    intent.putExtra("apiKey", getIntent().getStringExtra("apiKey"));
                     startActivity(intent);
                 } else if (id == R.id.nav_appointments) {
                     Intent intent = new Intent(MedicineInfo.this, AppointmentsBoard.class);
-                    intent.putExtra("apiKey", getIntent().getStringExtra("apiKey")); // Pass the apiKey
+                    intent.putExtra("apiKey", getIntent().getStringExtra("apiKey"));
                     startActivity(intent);
                 } else if (id == R.id.nav_medicine_info) {
                     // Already here
+                } else if (id == R.id.nav_symptoms) {
+                    Intent intent = new Intent(MedicineInfo.this, SymptomsListActivity.class);
+                    intent.putExtra("apiKey", getIntent().getStringExtra("apiKey"));
+                    startActivity(intent);
                 }
                 drawerLayout.closeDrawers();
                 return true;
