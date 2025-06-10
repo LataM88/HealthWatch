@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".AddSymptomActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dodaj objaw"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/blue_700"
+            android:fontFamily="@font/kanitmedium"
+            android:layout_marginBottom="24dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nazwa objawu"
+            android:textSize="18sp"
+            android:fontFamily="@font/kanitregular"
+            android:textColor="@color/blue_700"
+            android:layout_marginBottom="8dp"/>
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextSymptomName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_edixtext"
+            android:hint="np. ból głowy, kaszel"
+            android:minHeight="65dp"
+            android:textColor="@color/black"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Data i godzina"
+            android:textSize="18sp"
+            android:fontFamily="@font/kanitregular"
+            android:textColor="@color/blue_700"
+            android:layout_marginBottom="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+
+            <Button
+                android:id="@+id/buttonSelectDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Wybierz datę"
+                android:background="@drawable/custom_button"
+                android:textColor="@color/blue_700"
+                android:layout_marginEnd="8dp"/>
+
+            <Button
+                android:id="@+id/buttonSelectTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Wybierz czas"
+                android:background="@drawable/custom_button"
+                android:textColor="@color/blue_700"
+                android:layout_marginStart="8dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textViewDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Data: 10.06.2024"
+            android:textSize="16sp"
+            android:textColor="@color/blue_700"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/textViewTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Godzina: 14:30"
+            android:textSize="16sp"
+            android:textColor="@color/blue_700"
+            android:layout_marginBottom="24dp"/>
+
+        <TextView
+            android:id="@+id/textViewIntensity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nasilenie: 5/10"
+            android:textSize="18sp"
+            android:fontFamily="@font/kanitregular"
+            android:textColor="@color/blue_700"
+            android:layout_marginBottom="8dp"/>
+
+        <SeekBar
+            android:id="@+id/seekBarIntensity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="9"
+            android:progress="4"
+            android:layout_marginBottom="16dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="24dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Łagodne"
+                android:textSize="12sp"
+                android:textColor="@color/blue_700"
+                android:gravity="start"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Średnie"
+                android:textSize="12sp"
+                android:textColor="@color/blue_700"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Silne"
+                android:textSize="12sp"
+                android:textColor="@color/blue_700"
+                android:gravity="end"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notatki (opcjonalne)"
+            android:textSize="18sp"
+            android:fontFamily="@font/kanitregular"
+            android:textColor="@color/blue_700"
+            android:layout_marginBottom="8dp"/>
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextNotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_edixtext"
+            android:hint="Dodatkowe informacje o objawie..."
+            android:minHeight="100dp"
+            android:textColor="@color/black"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="16dp"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:lines="4"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/textViewError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/red"
+            android:textSize="16sp"
+            android:visibility="gone"
+            android:gravity="center"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/buttonAddSymptom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_button"
+            android:text="Dodaj objaw"
+            android:textColor="@color/blue_700"
+            android:textSize="18sp"
+            android:fontFamily="@font/kanitmedium"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:layout_marginTop="16dp"/>
+
+    </LinearLayout>
+
+</ScrollView>

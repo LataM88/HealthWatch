@@ -90,6 +90,10 @@ public class AppointmentsBoard extends AppCompatActivity implements AppointmentA
                     Intent intent = new Intent(AppointmentsBoard.this, MedicineInfo.class);
                     intent.putExtra("apiKey", apiKey); // Pass the API key
                     startActivity(intent);
+                } else if (id == R.id.nav_symptoms) {
+                    Intent intent = new Intent(AppointmentsBoard.this, SymptomsListActivity.class);
+                    intent.putExtra("apiKey", apiKey); // Pass the API key
+                    startActivity(intent);
                 }
                 drawerLayout.closeDrawers();
                 return true;

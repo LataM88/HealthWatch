@@ -53,6 +53,14 @@
             android:name=".MedicineInfo"
             android:exported="true" />
 
+        <activity
+            android:name=".SymptomsListActivity"
+            android:exported="true"/>
+
+        <activity
+            android:name=".AddSymptomActivity"
+            android:exported="true"/>
+
         <receiver android:name=".notifications.NotificationReceiver"
             android:enabled="true"
             android:exported="false" />

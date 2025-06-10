@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textViewSymptomName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ból głowy"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/blue_700"
+                    android:fontFamily="@font/kanitmedium"/>
+
+                <TextView
+                    android:id="@+id/textViewDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10.06.2024 14:30"
+                    android:textSize="14sp"
+                    android:textColor="@color/blue_700"
+                    android:layout_marginTop="4dp"/>
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/buttonDelete"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_menu_delete"
+                android:tint="@color/red"
+                android:contentDescription="Usuń objaw"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nasilenie:"
+                android:textSize="14sp"
+                android:textColor="@color/blue_700"
+                android:layout_marginEnd="8dp"/>
+
+            <TextView
+                android:id="@+id/textViewIntensity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="7/10"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/blue_700"
+                android:layout_marginEnd="8dp"/>
+
+            <TextView
+                android:id="@+id/textViewIntensityDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Silne"
+                android:textSize="12sp"
+                android:textColor="@color/blue_700"
+                android:background="@drawable/add_button"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"/>
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBarIntensity"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:max="100"
+            android:progress="70"
+            android:layout_marginTop="8dp"
+            android:progressTint="@color/red"/>
+
+        <TextView
+            android:id="@+id/textViewNotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Po długim dniu pracy przy komputerze"
+            android:textSize="14sp"
+            android:textColor="@color/blue_700"
+            android:layout_marginTop="12dp"
+            android:padding="8dp"
+            android:background="@drawable/add_button"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

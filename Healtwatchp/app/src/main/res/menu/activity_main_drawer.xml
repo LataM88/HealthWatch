@@ -13,5 +13,9 @@
             android:id="@+id/nav_medicine_info"
             android:icon="@android:drawable/ic_menu_search"
             android:title="Informacje o lekach" />
+        <item
+            android:id="@+id/nav_symptoms"
+            android:icon="@android:drawable/ic_menu_edit"
+            android:title="Objawy" />
     </group>
 </menu>
