@@ -2,6 +2,7 @@ package com.examplehealtwatch.controller;
 
 import com.examplehealtwatch.User;
 import com.examplehealtwatch.request.MedicationRequest;
+import com.examplehealtwatch.service.EmailService;
 import com.examplehealtwatch.service.LoginService;
 import com.examplehealtwatch.service.MedicationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class MedicationController {
 
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private EmailService emailService;
 
     @PostMapping("/medication")
     public ResponseEntity<String> addMedication(@RequestBody MedicationRequest request,
@@ -74,4 +78,52 @@ public class MedicationController {
             return ResponseEntity.status(404).body("{\"message\": \"Lek nie znaleziony lub brak uprawnień!\"}");
         }
     }
+    @PostMapping("/medications/share")
+    public ResponseEntity<Map<String, String>> shareMedicationList(
+            @RequestHeader("Authorization") String apiKey,
+            @RequestParam String doctorEmail,
+            @RequestParam(required = false, defaultValue = "") String message) {
+
+        Map<String, String> response = new HashMap<>();
+
+        try {
+            // Walidacja API Key
+            if (!loginService.validateApiKey(apiKey)) {
+                response.put("status", "error");
+                response.put("message", "Nieprawidłowy klucz API");
+                return ResponseEntity.status(403).body(response);
+            }
+
+            // Walidacja email
+            if (doctorEmail == null || doctorEmail.trim().isEmpty() || !isValidEmail(doctorEmail)) {
+                response.put("status", "error");
+                response.put("message", "Nieprawidłowy adres email");
+                return ResponseEntity.status(400).body(response);
+            }
+
+            Long userId = loginService.getUserIdFromApiKey(apiKey);
+
+            // Wyślij email z listą leków
+            emailService.sendMedicationList(userId, doctorEmail.trim(), message);
+
+            response.put("status", "success");
+            response.put("message", "Lista dostarczona na adres: " + doctorEmail);
+
+            System.out.println("Lista leków wysłana dla użytkownika ID: " + userId + " na email: " + doctorEmail);
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            System.err.println("Błąd podczas wysyłania listy leków: " + e.getMessage());
+            e.printStackTrace();
+
+            response.put("status", "error");
+            response.put("message", "Nie udało się wysłać listy leków: " + e.getMessage());
+            return ResponseEntity.status(500).body(response);
+        }
+    }
+    private boolean isValidEmail(String email) {
+        return email != null && email.contains("@") && email.contains(".") && email.length() > 5;
+    }
 }
+

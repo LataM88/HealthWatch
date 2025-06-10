@@ -157,6 +157,17 @@
                 android:src="@drawable/add_button"
                 app:backgroundTint="@color/blue_700" />
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/bottom_panel"
+                android:layout_toStartOf="@id/fab_add"
+                android:layout_margin="16dp"
+                android:contentDescription="Udostępnij leki"
+                android:src="@drawable/ic_share"
+                app:backgroundTint="@color/blue_700" />
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/bottom_panel"
                 android:layout_width="match_parent"

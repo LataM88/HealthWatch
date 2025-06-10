@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/layout/dialog_share_medications.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Udostępnij listę leków"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/blue_700"
+        android:layout_marginBottom="16dp"
+        android:gravity="center" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Wprowadź adres email lekarza, na który chcesz wysłać swoją aktualną listę leków."
+        android:textSize="14sp"
+        android:layout_marginBottom="16dp"
+        android:textColor="@android:color/black" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <EditText
+            android:id="@+id/et_doctor_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email lekarza"
+            android:inputType="textEmailAddress"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Wiadomość (opcjonalna):"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"
+        android:textColor="@android:color/black" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <EditText
+            android:id="@+id/et_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Dodatkowa wiadomość do lekarza..."
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:minLines="2" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/btn_cancel_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Anuluj"
+            android:textColor="@color/blue_700"
+            android:background="@drawable/custom_button_stroke"
+            android:layout_marginEnd="12dp" />
+
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wyślij"
+            android:background="@drawable/custom_button_startup"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+</LinearLayout>
