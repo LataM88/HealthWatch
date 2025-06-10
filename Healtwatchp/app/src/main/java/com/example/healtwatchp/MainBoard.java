@@ -39,6 +39,8 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.app.AlertDialog;
+import android.app.ProgressDialog; // (deprecated, but works for now)
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,6 +60,7 @@ public class MainBoard extends AppCompatActivity implements MedicationAdapter.On
     String selectedTime = "";
     String apiKey = "";
     FloatingActionButton fabAdd;
+    FloatingActionButton fabShare;
     CardView bottomPanel;
     ChipGroup dayChipGroup;
 
@@ -77,7 +80,6 @@ public class MainBoard extends AppCompatActivity implements MedicationAdapter.On
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
         toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -125,6 +127,7 @@ public class MainBoard extends AppCompatActivity implements MedicationAdapter.On
         cancelButton = findViewById(R.id.cancel_add);
         textViewError = findViewById(R.id.error_message);
         fabAdd = findViewById(R.id.fab_add);
+        fabShare = findViewById(R.id.fab_share);
         bottomPanel = findViewById(R.id.bottom_panel);
         dayChipGroup = findViewById(R.id.day_chip_group);
         recyclerView = findViewById(R.id.recycler);
@@ -181,6 +184,8 @@ public class MainBoard extends AppCompatActivity implements MedicationAdapter.On
                 notificationHelper.scheduleMedicationNotification(medication);
             }
         });
+
+        fabShare.setOnClickListener(v -> showShareDialog());
 
         setupDayButtons();
     }
@@ -412,5 +417,109 @@ public class MainBoard extends AppCompatActivity implements MedicationAdapter.On
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showShareDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_share_medications, null);
+        EditText etDoctorEmail = dialogView.findViewById(R.id.et_doctor_email);
+        EditText etMessage = dialogView.findViewById(R.id.et_message);
+        Button btnSend = dialogView.findViewById(R.id.btn_send);
+        Button btnCancel = dialogView.findViewById(R.id.btn_cancel_share);
+        AlertDialog dialog = builder.setView(dialogView).create();
+        btnSend.setOnClickListener(v -> {
+            String email = etDoctorEmail.getText().toString().trim();
+            String message = etMessage.getText().toString().trim();
+            if (email.isEmpty()) {
+                etDoctorEmail.setError("Wprowadź adres email");
+                return;
+            }
+            if (!isValidEmail(email)) {
+                etDoctorEmail.setError("Nieprawidłowy format emaila");
+                return;
+            }
+            dialog.dismiss();
+            shareMedicationList(email, message);
+        });
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+        dialog.show();
+    }
+
+    private void shareMedicationList(String doctorEmail, String message) {
+        String url = "http://10.0.2.2:8080/api/medications/share";
+        RequestQueue queue = Volley.newRequestQueue(this);
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Wysyłanie listy leków...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.POST,
+                url,
+                response -> {
+                    progressDialog.dismiss();
+                    try {
+                        JSONObject jsonResponse = new JSONObject(response);
+                        String status = jsonResponse.getString("status");
+                        String responseMessage = jsonResponse.getString("message");
+                        if ("success".equals(status)) {
+                            showSuccessDialog(responseMessage);
+                        } else {
+                            showErrorDialog(responseMessage);
+                        }
+                    } catch (JSONException e) {
+                        showErrorDialog("Błąd podczas przetwarzania odpowiedzi");
+                    }
+                },
+                error -> {
+                    progressDialog.dismiss();
+                    String errorMessage = "Błąd podczas wysyłania";
+                    if (error.networkResponse != null) {
+                        try {
+                            String errorData = new String(error.networkResponse.data);
+                            JSONObject errorJson = new JSONObject(errorData);
+                            errorMessage = errorJson.getString("message");
+                        } catch (Exception e) {
+                            // Użyj domyślnego komunikatu
+                        }
+                    }
+                    showErrorDialog(errorMessage);
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("doctorEmail", doctorEmail);
+                params.put("message", message);
+                return params;
+            }
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", apiKey);
+                return headers;
+            }
+        };
+        queue.add(stringRequest);
+    }
+
+    private boolean isValidEmail(String email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    private void showSuccessDialog(String message) {
+        new AlertDialog.Builder(this)
+                .setTitle("Sukces")
+                .setMessage(message)
+                .setIcon(R.drawable.ic_check_circle)
+                .setPositiveButton("OK", null)
+                .show();
+    }
+
+    private void showErrorDialog(String message) {
+        new AlertDialog.Builder(this)
+                .setTitle("Błąd")
+                .setMessage(message)
+                .setIcon(R.drawable.ic_error)
+                .setPositiveButton("OK", null)
+                .show();
     }
 }
