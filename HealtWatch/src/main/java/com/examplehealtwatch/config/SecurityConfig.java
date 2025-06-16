@@ -14,6 +14,11 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+/**
+ * Konfiguracja bezpieczeństwa aplikacji.
+ * Definiuje ustawienia CORS, szyfrowanie haseł oraz polityki dostępu do zasobów.
+ * Integruje się z mechanizmem uwierzytelniania Spring Security.
+ */
 public class SecurityConfig {
 
     @Bean

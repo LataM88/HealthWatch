@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+/**
+ * Kontroler odpowiedzialny za logowanie użytkowników.
+ * Obsługuje proces uwierzytelniania oraz generowanie odpowiedzi na żądania logowania.
+ */
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api")

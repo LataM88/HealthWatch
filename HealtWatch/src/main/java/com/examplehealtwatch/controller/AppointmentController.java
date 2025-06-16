@@ -13,6 +13,11 @@ import java.util.Map;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api")
+/**
+ * Kontroler REST do obsługi wizyt lekarskich.
+ * Umożliwia dodawanie, pobieranie i zarządzanie wizytami użytkowników.
+ * Integruje się z warstwą serwisową oraz obsługuje żądania HTTP.
+ */
 public class AppointmentController {
 
     @Autowired
@@ -21,6 +26,13 @@ public class AppointmentController {
     @Autowired
     private LoginService loginService;
 
+    /**
+     * Dodaje nową wizytę lekarską dla zalogowanego użytkownika.
+     * Wymaga poprawnego klucza API w nagłówku żądania.
+     * @param request dane wizyty
+     * @param apiKey klucz autoryzacyjny użytkownika
+     * @return odpowiedź z informacją o powodzeniu operacji
+     */
     @PostMapping("/appointment")
     public ResponseEntity<String> addAppointment(@RequestBody AppointmentRequest request,
                                                  @RequestHeader("Authorization") String apiKey) {
@@ -35,6 +47,12 @@ public class AppointmentController {
         return ResponseEntity.ok("{\"message\": \"Wizyta dodana!\"}");
     }
 
+    /**
+     * Pobiera listę wszystkich wizyt zalogowanego użytkownika.
+     * Wymaga poprawnego klucza API w nagłówku żądania.
+     * @param apiKey klucz autoryzacyjny użytkownika
+     * @return lista wizyt w formie mapy
+     */
     @GetMapping("/appointments")
     public ResponseEntity<List<Map<String, String>>> getAppointments(@RequestHeader("Authorization") String apiKey) {
         System.out.println("Otrzymano API Key: " + apiKey);
@@ -50,6 +68,13 @@ public class AppointmentController {
         return ResponseEntity.ok(appointments);
     }
 
+    /**
+     * Usuwa wizytę o podanym ID, jeśli należy do zalogowanego użytkownika.
+     * Wymaga poprawnego klucza API w nagłówku żądania.
+     * @param id identyfikator wizyty
+     * @param apiKey klucz autoryzacyjny użytkownika
+     * @return odpowiedź z informacją o powodzeniu lub błędzie
+     */
     @DeleteMapping("/appointment/{id}")
     public ResponseEntity<String> deleteAppointment(@PathVariable Long id, @RequestHeader("Authorization") String apiKey) {
         System.out.println("Otrzymano DELETE dla wizyty ID: " + id);

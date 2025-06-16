@@ -2,6 +2,11 @@ package com.examplehealtwatch.request;
 
 import lombok.*;
 
+/**
+ * Klasa pomocnicza do obsługi żądań dotyczących wizyt lekarskich.
+ * Przechowuje dane przesyłane przez użytkownika podczas dodawania nowej wizyty.
+ * Ułatwia mapowanie danych wejściowych na encję Appointment.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

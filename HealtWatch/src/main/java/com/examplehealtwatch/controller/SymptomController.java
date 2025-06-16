@@ -12,11 +12,26 @@ import java.util.Map;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/symptoms")
+/**
+ * Kontroler REST do obsługi objawów zdrowotnych.
+ * Umożliwia dodawanie, pobieranie i zarządzanie objawami zgłaszanymi przez użytkowników.
+ * Integruje się z warstwą serwisową i obsługuje żądania HTTP.
+ */
 public class SymptomController {
 
     @Autowired
     private SymptomService symptomService;
 
+    /**
+     * Dodaje nowy objaw zdrowotny dla zalogowanego użytkownika.
+     * Wymaga poprawnego klucza API oraz poprawnego formatu daty.
+     * @param apiKey klucz autoryzacyjny użytkownika
+     * @param symptomName nazwa objawu
+     * @param intensity intensywność objawu
+     * @param symptomDate data i godzina wystąpienia objawu
+     * @param notes dodatkowe notatki
+     * @return odpowiedź z informacją o powodzeniu lub błędzie
+     */
     // Dodaj nowy objaw
     @PostMapping("/add")
     public ResponseEntity<Map<String, Object>> addSymptom(
@@ -47,6 +62,12 @@ public class SymptomController {
         }
     }
 
+    /**
+     * Pobiera wszystkie objawy zalogowanego użytkownika.
+     * Wymaga poprawnego klucza API.
+     * @param apiKey klucz autoryzacyjny użytkownika
+     * @return mapa z listą objawów
+     */
     // Pobierz wszystkie objawy użytkownika
     @GetMapping("/list")
     public ResponseEntity<Map<String, Object>> getUserSymptoms(@RequestParam String apiKey) {
@@ -59,6 +80,13 @@ public class SymptomController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Pobiera objawy o konkretnej nazwie dla zalogowanego użytkownika.
+     * Wymaga poprawnego klucza API.
+     * @param apiKey klucz autoryzacyjny użytkownika
+     * @param symptomName nazwa objawu
+     * @return mapa z listą objawów o danej nazwie
+     */
     // Pobierz objawy dla konkretnej nazwy
     @GetMapping("/by-name")
     public ResponseEntity<Map<String, Object>> getSymptomsByName(

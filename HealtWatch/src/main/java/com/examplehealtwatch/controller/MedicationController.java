@@ -17,6 +17,11 @@ import java.util.Map;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api")
+/**
+ * Kontroler REST do obsługi leków użytkownika.
+ * Pozwala na dodawanie, pobieranie i zarządzanie lekami oraz powiadomieniami.
+ * Integruje się z warstwą serwisową i obsługuje żądania HTTP.
+ */
 public class MedicationController {
 
     @Autowired
@@ -28,6 +33,13 @@ public class MedicationController {
     @Autowired
     private EmailService emailService;
 
+    /**
+     * Dodaje nowy lek dla zalogowanego użytkownika.
+     * Wymaga poprawnego klucza API w nagłówku żądania.
+     * @param request dane leku
+     * @param apiKey klucz autoryzacyjny użytkownika
+     * @return odpowiedź z informacją o powodzeniu operacji
+     */
     @PostMapping("/medication")
     public ResponseEntity<String> addMedication(@RequestBody MedicationRequest request,
                                                 @RequestHeader("Authorization") String apiKey) {
@@ -42,6 +54,12 @@ public class MedicationController {
         return ResponseEntity.ok("{\"message\": \"Lek dodany!\"}");
     }
 
+    /**
+     * Pobiera listę wszystkich leków zalogowanego użytkownika.
+     * Wymaga poprawnego klucza API w nagłówku żądania.
+     * @param apiKey klucz autoryzacyjny użytkownika
+     * @return lista leków w formie mapy
+     */
     @GetMapping("/medications")
     public ResponseEntity<List<Map<String, String>>> getMedications(@RequestHeader("Authorization") String apiKey) {
         System.out.println("Otrzymano API Key: " + apiKey);
@@ -57,6 +75,13 @@ public class MedicationController {
         return ResponseEntity.ok(medications);
     }
 
+    /**
+     * Usuwa lek o podanym ID, jeśli należy do zalogowanego użytkownika.
+     * Wymaga poprawnego klucza API w nagłówku żądania.
+     * @param id identyfikator leku
+     * @param apiKey klucz autoryzacyjny użytkownika
+     * @return odpowiedź z informacją o powodzeniu lub błędzie
+     */
     @DeleteMapping("/medication/{id}")
     public ResponseEntity<String> deleteMedication(@PathVariable Long id, @RequestHeader("Authorization") String apiKey) {
         System.out.println("Otrzymano DELETE dla leku ID: " + id);

@@ -1,9 +1,9 @@
 package com.examplehealtwatch.service;
 
 import com.examplehealtwatch.Symptom;
-import com.examplehealtwatch.SymptomRepository;
+import com.examplehealtwatch.repository.SymptomRepository;
 import com.examplehealtwatch.User;
-import com.examplehealtwatch.UserRespository;
+import com.examplehealtwatch.repository.UserRespository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,22 @@ public class SymptomService {
     @Autowired
     private LoginService loginService;
 
-    // Dodaj nowy objaw
+    /**
+     * Serwis odpowiedzialny za logikę biznesową objawów zdrowotnych.
+     * Zarządza operacjami na objawach, w tym zapisem i pobieraniem danych z repozytorium.
+     * Integruje się z warstwą kontrolerów oraz obsługuje powiązania z użytkownikami.
+     */
+
+    /**
+     * Dodaje nowy objaw zdrowotny powiązany z użytkownikiem.
+     * Wymaga poprawnego klucza API oraz poprawnego formatu daty.
+     * @param apiKey klucz autoryzacyjny użytkownika
+     * @param symptomName nazwa objawu
+     * @param intensity intensywność objawu
+     * @param symptomDate data i godzina wystąpienia objawu
+     * @param notes dodatkowe notatki
+     * @return mapa z informacją o powodzeniu lub błędzie
+     */
     public Map<String, Object> addSymptom(String apiKey, String symptomName,
                                           Integer intensity, LocalDateTime symptomDate, String notes) {
         Map<String, Object> response = new HashMap<>();
@@ -66,7 +81,11 @@ public class SymptomService {
         return response;
     }
 
-    // Pobierz wszystkie objawy użytkownika
+    /**
+     * Pobiera wszystkie objawy powiązane z użytkownikiem na podstawie klucza API.
+     * @param apiKey klucz autoryzacyjny użytkownika
+     * @return mapa z listą objawów lub informacją o błędzie
+     */
     public Map<String, Object> getUserSymptoms(String apiKey) {
         Map<String, Object> response = new HashMap<>();
 

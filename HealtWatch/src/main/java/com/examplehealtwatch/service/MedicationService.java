@@ -1,9 +1,9 @@
 package com.examplehealtwatch.service;
 
 import com.examplehealtwatch.Medication;
-import com.examplehealtwatch.MedicationRepository;
+import com.examplehealtwatch.repository.MedicationRepository;
 import com.examplehealtwatch.User;
-import com.examplehealtwatch.UserRespository;
+import com.examplehealtwatch.repository.UserRespository;
 import com.examplehealtwatch.request.MedicationRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +11,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+/**
+ * Serwis odpowiedzialny za logikę biznesową leków użytkownika.
+ * Zarządza operacjami na lekach, w tym zapisem i pobieraniem danych z repozytorium.
+ * Integruje się z warstwą kontrolerów oraz obsługuje transakcje.
+ */
 @Service
 public class MedicationService {
 
@@ -20,6 +25,12 @@ public class MedicationService {
     @Autowired
     private UserRespository userRepository;
 
+    /**
+     * Zapisuje nowy lek powiązany z użytkownikiem o podanym ID.
+     * Tworzy obiekt leku na podstawie danych z żądania i zapisuje go w bazie.
+     * @param request dane leku
+     * @param userId identyfikator użytkownika
+     */
     @Transactional
     public void saveMedication(MedicationRequest request, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
@@ -40,6 +51,12 @@ public class MedicationService {
         }
     }
 
+    /**
+     * Pobiera wszystkie leki powiązane z danym użytkownikiem.
+     * Zwraca listę map z podstawowymi danymi każdego leku.
+     * @param userId identyfikator użytkownika
+     * @return lista leków w formie mapy
+     */
     public List<Map<String, String>> getMedicationsForUser(Long userId) {
         List<Medication> medications = medicationRepository.findByUserId(userId);
 
@@ -57,6 +74,12 @@ public class MedicationService {
         return result;
     }
 
+    /**
+     * Usuwa lek o podanym ID, jeśli należy do użytkownika o podanym ID.
+     * @param id identyfikator leku
+     * @param userId identyfikator użytkownika
+     * @return true jeśli usunięto lek, false w przeciwnym wypadku
+     */
     public boolean deleteMedication(Long id, Long userId) {
         Optional<Medication> medication = medicationRepository.findById(id);
 

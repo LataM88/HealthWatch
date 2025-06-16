@@ -3,6 +3,11 @@ package com.examplehealtwatch;
 import jakarta.persistence.*;
 import lombok.*;
 
+/**
+ * Klasa reprezentująca wizytę lekarską w systemie.
+ * Przechowuje informacje o lekarzu, dacie i godzinie wizyty.
+ * Umożliwia powiązanie wizyt z użytkownikami oraz zarządzanie nimi w bazie danych.
+ */
 @Entity
 @Table(name = "appointments")
 @Getter

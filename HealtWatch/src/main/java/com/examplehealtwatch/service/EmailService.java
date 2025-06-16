@@ -1,9 +1,9 @@
 package com.examplehealtwatch.service;
 
 import com.examplehealtwatch.Medication;
-import com.examplehealtwatch.MedicationRepository;
+import com.examplehealtwatch.repository.MedicationRepository;
 import com.examplehealtwatch.User;
-import com.examplehealtwatch.UserRespository;
+import com.examplehealtwatch.repository.UserRespository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,6 +13,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/**
+ * Serwis odpowiedzialny za wysyłanie powiadomień e-mail.
+ * Umożliwia komunikację z użytkownikami oraz przypomnienia o lekach.
+ * Integruje się z repozytorium leków i użytkowników.
+ */
 @Service
 public class EmailService {
 

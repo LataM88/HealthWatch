@@ -1,5 +1,6 @@
-package com.examplehealtwatch;
+package com.examplehealtwatch.repository;
 
+import com.examplehealtwatch.Symptom;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -8,6 +9,11 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Repozytorium do obsługi encji Symptom.
+ * Umożliwia przechowywanie i pobieranie informacji o objawach użytkowników.
+ * Wspiera operacje CRUD oraz rozszerzenia zapytań.
+ */
 @Repository
 public interface SymptomRepository extends JpaRepository<Symptom, Long> {
 

@@ -9,11 +9,25 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api")
+/**
+ * Kontroler REST do obsługi użytkowników.
+ * Odpowiada za rejestrację, pobieranie i zarządzanie danymi użytkowników.
+ * Integruje się z warstwą serwisową i obsługuje żądania HTTP.
+ */
 public class UserController {
 
     @Autowired
     private UserService userService;
 
+    /**
+     * Rejestruje nowego użytkownika w systemie.
+     * Tworzy nowy obiekt użytkownika na podstawie przesłanych danych.
+     * @param name imię użytkownika
+     * @param surname nazwisko użytkownika
+     * @param email adres e-mail użytkownika
+     * @param password hasło użytkownika
+     * @return odpowiedź z informacją o powodzeniu rejestracji
+     */
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestParam String name,
                                                @RequestParam String surname,

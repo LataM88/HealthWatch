@@ -1,7 +1,7 @@
 package com.examplehealtwatch.service;
 
 import com.examplehealtwatch.User;
-import com.examplehealtwatch.UserRespository;
+import com.examplehealtwatch.repository.UserRespository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,6 +12,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Serwis odpowiedzialny za logikę logowania i uwierzytelniania użytkowników.
+ * Zarządza generowaniem kluczy API oraz weryfikacją danych logowania.
+ * Integruje się z repozytorium użytkowników.
+ */
 @Service
 public class LoginService {
 
